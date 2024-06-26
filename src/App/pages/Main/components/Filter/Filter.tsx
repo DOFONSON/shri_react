@@ -1,15 +1,16 @@
 import React from "react";
-import MultiDropdown from "./components/Multidrop/Multidrop"
-const Filter = () => {
+import MultiDropdown from "./components/Multidrop/Multidrop";
+import { useSearchParams } from "react-router-dom";
 
-    const [genreValue, setGenreValue] = React.useState<Option[]>([]);
-    const [yearValue, setYearValue] = React.useState<Option[]>([]);
-  
+const Filter = () => {
+    const [genreValue, setGenreValue] = React.useState<Option | undefined>(undefined); 
+    const [yearValue, setYearValue] = React.useState<Option | undefined>(undefined); 
+    const [searchParams, setSearchParams] = useSearchParams();
 
     type Option = {
         key: string;
         value: string;
-      };
+    };
 
     const GENRES = {
         '0': 'Не выбран',
@@ -25,7 +26,8 @@ const Filter = () => {
         adventure: 'Приключения',
         musical: 'Мьюзикл',
         war: 'Военный',
-    }
+    };
+
     const YEARS = {
         '0': 'Не выбран',
         '2009': '2009',
@@ -34,102 +36,60 @@ const Filter = () => {
         '2006': '2006',
         '1990-2005': '1990-2005',
         '1950-1989': '1950-1989',
-    }
-    let genresData = []
-    let yearsData = []
+    };
 
-    for (const key in GENRES) {
+    let genresData = Object.entries(GENRES).map(([key, value]) => ({ key, value }));
+    let yearsData = Object.entries(YEARS).map(([key, value]) => ({ key, value }));
 
-        let obj = {
-            key: `${key}`,
-            value: `${GENRES[key]}`
-        }
-        genresData.push(obj)
-    }
+    const getGenreFunction = (value: Option | undefined): void => { 
+        setGenreValue(value);
+        setSearchParams((params) => {
+            const newParams = new URLSearchParams(params);
+            newParams.set('genre', value?.value.toLocaleLowerCase() || ''); 
+            return newParams;
+        });
+    };
 
-    for (const key in YEARS) {
-        
-        let obj = {
-            key: `${key}`,
-            value: `${YEARS[key]}`
-        }
-        yearsData.push(obj)
-    }
-    const getGenreFunction = (values: Option[]): string => {
-        if (values.length === 0) {
-            return 'Выберите жанр'
-        } else {
-            let str = ''
-            let flag = false
-            if (values.length > 1) {
-                flag = true
-            }
-            for (let i = 0; i < values.length; i++) {
-                console.log(values[i]);
-                
-                if (i == values.length - 1) {
-                    str += values[i].value
-                } else {
-                    str += `${values[i].value}, `
-                    console.log(str);
-                    
-                }
-            }
-            console.log(str);
-            
-            return str
-        }
+    const getYearFunction = (value: Option | undefined): void => { 
+        setYearValue(value);
+        setSearchParams((params) => {
+            const newParams = new URLSearchParams(params);
+            newParams.set('year', value?.value.toLocaleLowerCase() || ''); 
+            return newParams;
+        });
+    };
 
-    }
-    const getYearFunction = (values: Option[]): string => {
-        if (values.length === 0) {
-            return 'Выберите год'
-        } else {
-            let str = ''
-            let flag = false
-            if (values.length > 1) {
-                flag = true
-            }
-            for (let i = 0; i < values.length; i++) {
-                if (i == values.length - 1) {
-                    str += values[i].value
-                } else {
-                    str += `${values[i].value}, `
-                }
-            }
-            return str
-        }
-
-    }
     return (
         <div className="main__filter">
-          <h3>Фильтр</h3>
-          <div className="filter__input">
-            <label htmlFor="searchInput">
-              <p>Жанр</p>
-              <MultiDropdown
-                className="filter__drop"
-                options={genresData}
-                value={genreValue}
-                onChange={setGenreValue}
-                getTitle={getGenreFunction}
-              />
-            </label>
-          </div>
-          <div className="filter__input">
-            <label htmlFor="searchInput">
-              <p>Кинотетр</p>
-              <MultiDropdown
-                className="filter__drop"
-                options={yearsData}
-                value={yearValue}
-                onChange={setYearValue}
-                getTitle={getYearFunction}
-              />
-            </label>
-          </div>
+            <h3 className="filter__title">Фильтр</h3>
+            <div className="filter__input">
+                <label htmlFor="searchInput">
+                    <span className="filter__label_title">Жанр</span>
+                    <MultiDropdown
+                        className="filter__drop"
+                        options={genresData}
+                        value={genreValue}
+                        onChange={getGenreFunction}
+                        getTitle={(value) => value ? value.value : 'Выберите жанр'}
+                        singleSelect 
+                    />
+                </label>
+            </div>
+            <div className="filter__input">
+                <label htmlFor="searchInput">
+                    <span className="filter__label_title">Кинотетр</span>
+                    <MultiDropdown
+                        className="filter__drop"
+                        options={yearsData}
+                        value={yearValue}
+                        onChange={getYearFunction}
+                        getTitle={(value) => value ? value.value : 'Выберите год'}
+                        singleSelect 
+                    />
+                </label>
+            </div>
         </div>
-      );
+    );
 }
 
-export default Filter
+export default Filter;

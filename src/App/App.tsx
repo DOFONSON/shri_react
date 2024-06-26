@@ -1,13 +1,19 @@
 import './App.css'
 import Main from './pages/Main/Main'
 import Header from '../components/Header/Header'
-function App() {
+import { Routes, Route } from 'react-router-dom';
+import Film from './pages/Film/Film';
 
+function App() {
   return (
     <>
       <Header></Header>
-      <Main></Main>
-      
+      <Routes>
+          <Route path='/' element={<Main />}></Route>
+          <Route path={`/film`}>
+            <Route path=':name' element={<Film />}></Route>
+          </Route>
+      </Routes>
     </>
   )
 }
