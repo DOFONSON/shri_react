@@ -1,0 +1,27 @@
+.pagination {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    align-items: center;
+}
+
+.pagination__value {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+.pagination__btn {
+    padding: 8px;
+    border: none;
+    border-radius: 32px;
+    background-color: white;
+    width: 32px;
+    box-shadow: 0px 0px 4px 0px #0000004D;
+    height: 32px;
+    cursor: pointer;
+}
+
+.pagination__btn:disabled {
+    opacity: 0.3;
+}

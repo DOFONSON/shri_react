@@ -1,0 +1,23 @@
+.btn {
+    padding: 8px 16px 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .stan_btn {
+    background-color: #FF5500;
+    color: white;
+    transition: 0.3s;
+  }
+  
+  .inverse_btn {
+    background-color: inherit;
+    color: #FF5500;
+    border: 1px solid #FF5500;
+  }
+
+
+  .stan_btn:hover {
+    background-color: #E94E00;
+  }

@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import styles from './style.module.css'
 export type InputProps = Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'value'
@@ -19,6 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             },
             [onChange]
         )
+        
         return (
             <label className='srchinp_label'>
                 {holder ? <input
@@ -27,7 +29,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     value={value}
                     onChange={handleChange}
                     type='text'
-                    className={className === 'search__input_input' ? cn('srchinp_input', 'super_input') : 'super_input'}
+                    className={cn(className, className === 'search__input_input' ? cn(styles.srchinp_input, styles.super_input) : styles.super_input)}
                     placeholder={holder}
                 /> : <input
                 {...props}
@@ -35,10 +37,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 value={value}
                 onChange={handleChange}
                 type='text'
-                className={className === 'search__input_input' ? cn('srchinp_input', 'super_input') : 'super_input'}
+                className={cn(className, className === 'search__input_input' ? cn(styles.srchinp_input, styles.super_input) : styles.super_input)}
             />
                 }
-                {afterSlot && <div className='input_icon'></div>}
+                {afterSlot && <div className={styles.input_icon}>{afterSlot}</div>}
             </label >
         );
     }

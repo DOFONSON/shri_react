@@ -1,17 +1,42 @@
+// store/reducers/api.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Movie } from '../../types/Movie';
 
-export const movieApi = createApi({
-    reducerPath: 'moviesApi',
+export const singleMovieApi: any = createApi({
+    reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3030/api/v1/' }),
     endpoints: (builder) => ({
-        fetchMovies: builder.query<Movie, void>({
-            query: () => 'movie:',
-            transformResponse: (response: { search_result: Movie }) => response.search_result,
+        login: builder.mutation({
+            query: (credentials) => ({
+                url: 'login',
+                method: 'POST',
+                body: credentials,
+            }),
+        }),
+        fetchSingleMovie: builder.query({
+            query: (id) => `movie/${id}`,
+        }),
+        rateMovie: builder.mutation({
+            query: ({ id, rating }) => ({
+                url: `/rateMovie`,
+                method: 'POST',
+                body: { "movieId": id, "user_rate": rating },
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            }),
+            async onQueryStarted({ id, rating }, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    dispatch(
+                        singleMovieApi.util.updateQueryData('fetchSingleMovie', id, (draft) => {
+                            draft.userRating = rating;
+                        })
+                    );
+                } catch {
+                }
+            },
         }),
     }),
 });
 
-type UseFetchMovieQueryResult = ReturnType<typeof moviesApi.endpoints.fetchMovies.useQuery>;
-
-export const { useFetchMovieQuery }: { useFetchMovieQuery: UseFetchMovieQueryResult } = movieApi;
+export const { useLoginMutation, useFetchSingleMovieQuery, useRateMovieMutation } = singleMovieApi;

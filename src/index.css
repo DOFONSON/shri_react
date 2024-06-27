@@ -159,84 +159,9 @@ pre {
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #ededed;
-}
-.header {
-  background: #333333;
-  padding: 24px 32px  24px 32px;
-  display: flex;
-  justify-content: space-between;
-  position: sticky;
-  align-items: center;
+  color: #1B1F23;
 }
 
-header a {
-  text-decoration: none;
-}
-
-.header_title {
-  color: white;
-  font-size: 32px;
-  line-height: 37.5px;
-  text-decoration: none;
-}
-.header-btn {
-  padding: 8px 16px 8px 16px;
-  border-radius: 8px;
-  border: none;
-}
-
-.header-enter-btn {
-  background-color: #FF5500;
-  color: white;
-  transition: 0.3s;
-}
-
-.header-enter-btn:hover {
-  background-color: #E94E00;
-}
-
-.main__filter {
-  background-color: #FFFFFF;
-  padding: 24px;
-  border-radius: 8px;
-  width: 408px;
-  height: 232px;
-  box-sizing: border-box;
-}
-
-.filter__label_title {
-  margin-bottom: 4px;
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.filter__input {
-  margin-bottom: 16px;
-}
-
-.multi__options {
-  position: absolute;
-  min-width: 360px;
-  display: flex;
-  flex-direction: column;
-  max-height: 228px;
-  overflow-y: scroll;
-  box-shadow: 0px 10px 22px -4px #1B1F231F;
-}
-
-.multi__options button {
-  background-color: white;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-}
-
-.multi_drop_option {
-  padding: 12px;
-  color: 14px;
-  line-height: 20px;
-  width: 100%;
-}
 
 main {
   padding: 20px 31px;
@@ -244,72 +169,10 @@ main {
   gap: 24px;
 }
 
-.main__main {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
 
-.filter__title {
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
 
-.super_input {
-  width: 360px;
-  border: 1px solid #E1E3E6;
-  border-radius: 8px;
-  font-size: 14px;
-  padding: 10px 16px 10px 16px;
-  box-sizing: border-box;
-}
 
-.srchinp_input {
-  width: 400px;
-  padding: 12px 12px 12px 36px;
-}
 
-.main-movies__list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.main__film {
-  padding: 24px;
-  display: flex;
-  gap: 24px;
-  background-color: white;
-  text-decoration: none;
-}
 
-.main-film__title {
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 20px;
-  color: #1B1F23  ;
-}
 
-.main-film__photo img{
-  max-width: 100px;
-  max-height: 120px;
-  border-radius: 8px;
-}
 
-.main-film__option_list {
-  margin-top: 16px;
-  display: flex;
-  gap: 16px;
-}
-
-.main-film__option_list_item li {
-  margin-bottom: 12px;
-}
-
-.main-film__option_list_item--first {
-  color: #ABABAB;
-  font-size: 14px;
-  line-height: 20px;
-  min-width: 90px;
-}

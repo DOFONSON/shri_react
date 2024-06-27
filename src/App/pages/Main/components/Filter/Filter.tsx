@@ -1,11 +1,11 @@
 import React from "react";
 import MultiDropdown from "./components/Multidrop/Multidrop";
 import { useSearchParams } from "react-router-dom";
-
+import styles from './style.module.css'
 const Filter = () => {
     const [genreValue, setGenreValue] = React.useState<Option | undefined>(undefined); 
     const [yearValue, setYearValue] = React.useState<Option | undefined>(undefined); 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
 
     type Option = {
         key: string;
@@ -60,13 +60,13 @@ const Filter = () => {
     };
 
     return (
-        <div className="main__filter">
-            <h3 className="filter__title">Фильтр</h3>
-            <div className="filter__input">
+        <div className={styles.main__filter}>
+            <h3 className={styles.filter__title}>Фильтр</h3>
+            <div className={styles.filter__input}>
                 <label htmlFor="searchInput">
-                    <span className="filter__label_title">Жанр</span>
+                    <span className={styles.filter__label_title}>Жанр</span>
                     <MultiDropdown
-                        className="filter__drop"
+                        className={styles.filter__drop}
                         options={genresData}
                         value={genreValue}
                         onChange={getGenreFunction}
@@ -75,11 +75,11 @@ const Filter = () => {
                     />
                 </label>
             </div>
-            <div className="filter__input">
+            <div className={styles.filter__input}>
                 <label htmlFor="searchInput">
-                    <span className="filter__label_title">Кинотетр</span>
+                    <span className={styles.filter__label_title}>Кинотетр</span>
                     <MultiDropdown
-                        className="filter__drop"
+                        className={styles.filter__drop}
                         options={yearsData}
                         value={yearValue}
                         onChange={getYearFunction}

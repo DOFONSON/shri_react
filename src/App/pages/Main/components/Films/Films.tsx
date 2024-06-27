@@ -1,32 +1,36 @@
 import { useEffect, useState } from 'react';
 import { useFetchMoviesQuery } from '../../../../../store/reducers/moviesApi';
-import Film from './components/Film';
+import Film from './components/Film/Film';
 import { useSearchParams } from 'react-router-dom';
 import { Movie } from '../../../../../types/Movie';
-
+import Pagination from './components/Pagination/Pagination';
+import style from './style.module.css'
+import LoadingStub from './components/Stubs/LoadingStub/LoadingStub';
+import ErrorStub from './components/Stubs/ErrorStub/ErrorStub'
 const Films = () => {
-  let { data: movies = [], error, isLoading, refetch } = useFetchMoviesQuery();
-  console.log(refetch);
-  
   const [searchParams, setSearchParams] = useSearchParams();
+  let pNumber = searchParams.get('page') || '1'
+  let { data: movies = [], error, isFetching, refetch } = useFetchMoviesQuery(pNumber);
+  console.log(movies);
+  
   const [filteredMovies, setFilteredMovies] = useState(movies);
   let searchFieldVal = searchParams.get('search')
-
+  
   useEffect(() => {
-    refetch()
-    console.log(movies);
-    
+
     let filteredMoviesTemp = movies;
     movies = filteredMoviesTemp.filter((movie: Movie) => {
         return movie.title.toLocaleLowerCase().includes(String(searchFieldVal))
     })
     console.log(movies);
     
-  }, [searchFieldVal, refetch])
+  }, [searchFieldVal])
 
-  console.log(searchFieldVal);
+    console.log(filteredMovies);
+    
   
   useEffect(() => {
+    refetch()
     let filteredMoviesTemp = movies;
     if (!(searchParams.get('genre') === 'не выбран' ||!searchParams.get('genre'))) {
       filteredMoviesTemp = filteredMoviesTemp.filter((movie: Movie) => {
@@ -37,37 +41,48 @@ const Films = () => {
       filteredMoviesTemp = filteredMoviesTemp.filter((movie: Movie) => {
         if (searchParams.get('year')?.includes('-')) {
           let temp = searchParams.get('year')?.split('-');
-          return movie.release_year <= Number(temp[1]) && movie.release_year >= Number(temp[0]);
+          if (temp != undefined) {
+            return movie.release_year <= Number(temp[1]) && movie.release_year >= Number(temp[0]);
+          }
         }
         return movie.release_year == Number(searchParams.get('year'));
       });
     }
     setFilteredMovies(filteredMoviesTemp);
-  }, [searchParams, isLoading]);
+  }, [searchParams, movies]);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(Number(pNumber));
 
-  const moviesPerPage = 4;
+  const moviesPerPage = 10;
 
-  const indexOfLastMovie = currentPage * moviesPerPage;
-  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-  const currentMovies = filteredMovies.slice(indexOfFirstMovie, indexOfFirstMovie + moviesPerPage);
-
+  
+  
   const nextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, Math.ceil(filteredMovies.length / moviesPerPage)));
+    setCurrentPage(prev => prev + 1);
+    setSearchParams((params) => {
+      const newParams = new URLSearchParams(params);
+      newParams.set('page', (Number(pNumber) + 1).toString() || ''); 
+      return newParams;
+  });
+    
   };
-
+  
   const prevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    setCurrentPage(prev => prev - 1);
+    setSearchParams((params) => {
+      const newParams = new URLSearchParams(params);
+      newParams.set('page', (Number(pNumber) - 1).toString() || ''); 
+      return newParams;
+  });
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isFetching) return <LoadingStub />;
+  if (error) return <ErrorStub />;
 
   return (
     <div>
-      <ul className='main-movies__list'>
-        {currentMovies.map((movie: Movie) => (
+      <ul className={style.main_movies__list}>
+        {filteredMovies.map((movie: Movie) => (
           <li key={movie.id}>
             <Film
               id={movie.id}
@@ -81,10 +96,7 @@ const Films = () => {
           </li>
         ))}
       </ul>
-      <div className="pagination">
-        <button onClick={prevPage} disabled={currentPage === 1}>Previous</button>
-        <button onClick={nextPage} disabled={currentPage === Math.ceil(filteredMovies.length / moviesPerPage)}>Next</button>
-      </div>
+      <Pagination prevPage={prevPage} nextPage={nextPage} currentPage={currentPage} totalMovies={filteredMovies.length} moviesPerPage={moviesPerPage}/>
     </div>
   );
 };

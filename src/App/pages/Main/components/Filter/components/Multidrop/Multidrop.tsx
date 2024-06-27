@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Input from '../../../Input/Input';
+import Input from '../../../../../../../components/Input/Input';
 import cn from 'clsx';
-
+import styles from './style.module.css'
+import MultiIcon from './MultiIcon';
 export type Option = {
     key: string;
     value: string;
@@ -10,11 +11,11 @@ export type Option = {
 export type MultiDropdownProps = {
     className?: string;
     options: Option[];
-    value: Option | undefined; // Тип изменен на Option | undefined
-    onChange: (value: Option | undefined) => void; // Тип изменен на Option | undefined
+    value: Option | undefined; 
+    onChange: (value: Option | undefined) => void; 
     disabled?: boolean;
-    getTitle: (value: Option | undefined) => string; // Тип изменен на Option | undefined
-    singleSelect?: boolean; // Новый prop для указания одиночного выбора
+    getTitle: (value: Option | undefined) => string; 
+    singleSelect?: boolean;
 };
 
 const MultiDropdown: React.FC<MultiDropdownProps> = ({ className, options, value, onChange, disabled, getTitle, singleSelect }) => {
@@ -62,9 +63,9 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({ className, options, value
     const opened = isOpened && !disabled;
 
     return (
-        <div className={cn(className, 'multi_drop')} ref={wrapperRef}>
+        <div className={cn(className, styles.multi_drop)} ref={wrapperRef}>
             <Input
-                className="multi_drop_field"
+                className={styles.multi_drop_field}
                 onClick={open}
                 disabled={disabled}
                 placeholder={title}
@@ -72,12 +73,14 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({ className, options, value
                 onChange={setFilter}
                 ref={ref}
             />
+            <MultiIcon className={styles.multi__icon} orientation={isOpened ? 'top' : 'bot'} />
+
             {opened && (
-                <div className='multi__options'>
+                <div className={styles.multi__options}>
                     {filteredOptions.map(option => (
                         <button
                             key={option.key}
-                            className={cn('multi_drop_option', value?.key === option.key && 'multi_drop_option_selected')}
+                            className={cn(styles.multi_drop_option, value?.key === option.key && styles.multi_drop_option_selected)}
                             onClick={() => onSelect(option)}
                         >
                             {option.value}

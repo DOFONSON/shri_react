@@ -5,13 +5,11 @@ export const moviesApi = createApi({
     reducerPath: 'moviesApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3030/api/v1/' }),
     endpoints: (builder) => ({
-        fetchMovies: builder.query<Movie[], void>({
-            query: () => 'search',
+        fetchMovies: builder.query<Movie[], string>({
+            query: (page) => `/search?page=${page}`,
             transformResponse: (response: { search_result: Movie[] }) => response.search_result,
         }),
     }),
 });
 
-type UseFetchMoviesQueryResult = ReturnType<typeof moviesApi.endpoints.fetchMovies.useQuery>;
-
-export const { useFetchMoviesQuery }: { useFetchMoviesQuery: UseFetchMoviesQueryResult } = moviesApi;
+export const { useFetchMoviesQuery } = moviesApi;
