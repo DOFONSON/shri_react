@@ -6,78 +6,70 @@ import { Movie } from '../../../../../types/Movie';
 import Pagination from './components/Pagination/Pagination';
 import style from './style.module.css'
 import LoadingStub from './components/Stubs/LoadingStub/LoadingStub';
-import ErrorStub from './components/Stubs/ErrorStub/ErrorStub'
+import ErrorStub from './components/Stubs/ErrorStub/ErrorStub';
+
 const Films = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  let pNumber = searchParams.get('page') || '1'
-  let { data: movies = [], error, isFetching, refetch } = useFetchMoviesQuery(pNumber);
-  console.log(movies);
+  let pNumber = searchParams.get('page') || '1';
+  const { data: movies = [], error, isFetching } = useFetchMoviesQuery(pNumber);
   
-  const [filteredMovies, setFilteredMovies] = useState(movies);
-  let searchFieldVal = searchParams.get('search')
-  
-  useEffect(() => {
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
+  let searchFieldVal = searchParams.get('search')?.toLowerCase() || '';
 
-    let filteredMoviesTemp = movies;
-    movies = filteredMoviesTemp.filter((movie: Movie) => {
-        return movie.title.toLocaleLowerCase().includes(String(searchFieldVal))
-    })
-    console.log(movies);
-    
-  }, [searchFieldVal])
-
-    console.log(filteredMovies);
-    
-  
   useEffect(() => {
-    refetch()
-    let filteredMoviesTemp = movies;
-    if (!(searchParams.get('genre') === 'не выбран' ||!searchParams.get('genre'))) {
-      filteredMoviesTemp = filteredMoviesTemp.filter((movie: Movie) => {
-        return movie.genre == searchParams.get('genre');
-      });
-    }
-    if (!(searchParams.get('year') === 'не выбран' ||!searchParams.get('year'))) {
-      filteredMoviesTemp = filteredMoviesTemp.filter((movie: Movie) => {
-        if (searchParams.get('year')?.includes('-')) {
-          let temp = searchParams.get('year')?.split('-');
-          if (temp != undefined) {
-            return movie.release_year <= Number(temp[1]) && movie.release_year >= Number(temp[0]);
+    if (!isFetching && movies.length > 0) {
+      let filteredMoviesTemp = movies;
+
+      if (searchFieldVal) {
+        filteredMoviesTemp = filteredMoviesTemp.filter((movie: Movie) =>
+          movie.title.toLowerCase().includes(searchFieldVal)
+        );
+      }
+
+      if (searchParams.get('genre') && searchParams.get('genre') !== 'не выбран') {
+        filteredMoviesTemp = filteredMoviesTemp.filter((movie: Movie) =>
+          movie.genre === searchParams.get('genre')
+        );
+      }
+
+      if (searchParams.get('year') && searchParams.get('year') !== 'не выбран') {
+        filteredMoviesTemp = filteredMoviesTemp.filter((movie: Movie) => {
+          const yearParam = searchParams.get('year');
+          if (yearParam?.includes('-')) {
+            const [startYear, endYear] = yearParam.split('-').map(Number);
+            return movie.release_year >= startYear && movie.release_year <= endYear;
           }
-        }
-        return movie.release_year == Number(searchParams.get('year'));
-      });
+          return movie.release_year === Number(yearParam);
+        });
+      }
+
+      setFilteredMovies(filteredMoviesTemp);
     }
-    setFilteredMovies(filteredMoviesTemp);
-  }, [searchParams, movies]);
+  }, [movies, searchFieldVal, searchParams, isFetching]);
 
   const [currentPage, setCurrentPage] = useState(Number(pNumber));
-
   const moviesPerPage = 10;
 
-  
-  
   const nextPage = () => {
     setCurrentPage(prev => prev + 1);
     setSearchParams((params) => {
       const newParams = new URLSearchParams(params);
-      newParams.set('page', (Number(pNumber) + 1).toString() || ''); 
+      newParams.set('page', (Number(pNumber) + 1).toString());
       return newParams;
-  });
-    
+    });
   };
-  
+
   const prevPage = () => {
     setCurrentPage(prev => prev - 1);
     setSearchParams((params) => {
       const newParams = new URLSearchParams(params);
-      newParams.set('page', (Number(pNumber) - 1).toString() || ''); 
+      newParams.set('page', (Number(pNumber) - 1).toString());
       return newParams;
-  });
+    });
   };
 
   if (isFetching) return <LoadingStub />;
-  if (error) return <ErrorStub />;
+  if (error || !filteredMovies.length) return <ErrorStub />;
 
   return (
     <div>
@@ -96,7 +88,13 @@ const Films = () => {
           </li>
         ))}
       </ul>
-      <Pagination prevPage={prevPage} nextPage={nextPage} currentPage={currentPage} totalMovies={filteredMovies.length} moviesPerPage={moviesPerPage}/>
+      <Pagination
+        prevPage={prevPage}
+        nextPage={nextPage}
+        currentPage={currentPage}
+        totalMovies={filteredMovies.length}
+        moviesPerPage={moviesPerPage}
+      />
     </div>
   );
 };

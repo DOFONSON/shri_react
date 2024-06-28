@@ -1,4 +1,3 @@
-// store/slices/authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { singleMovieApi } from '../reducers/singleMovieApi';
 

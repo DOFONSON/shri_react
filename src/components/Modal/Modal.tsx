@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onLogin }) => {
     const [password, setPassword] = useState('');
     if (!isOpen) return null;
 
-    const handleSubmit = (e: Event) => {
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         onLogin(username, password);
     };

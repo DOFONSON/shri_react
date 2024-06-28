@@ -10,3 +10,9 @@
     font-weight: 500;
     line-height: 20px;
 }
+
+.wrapper {
+    margin-left: 400px;
+    margin-top: 230px;
+    text-align: center;
+}

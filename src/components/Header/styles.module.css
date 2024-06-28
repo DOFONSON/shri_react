@@ -4,9 +4,9 @@
     display: flex;
     justify-content: space-between;
     position: sticky;
-    top: 0; /* Add this line to make the header sticky */
+    top: 0; 
     align-items: center;
-    z-index: 1000; /* Optional: ensures the header stays above other content */
+    z-index: 1000; 
 }
 
   .header__user {

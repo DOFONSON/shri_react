@@ -1,0 +1,13 @@
+  
+
+  .rating {
+    display: flex;
+    gap: 8px;
+  }
+
+  .rating__rate {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }

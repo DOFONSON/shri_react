@@ -1,7 +1,6 @@
-// store/reducers/api.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const singleMovieApi: any = createApi({
+export const singleMovieApi = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3030/api/v1/' }),
     endpoints: (builder) => ({
@@ -13,7 +12,12 @@ export const singleMovieApi: any = createApi({
             }),
         }),
         fetchSingleMovie: builder.query({
-            query: (id) => `movie/${id}`,
+            query: (id) => ({
+                url: `movie/${id}`,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            }),
         }),
         rateMovie: builder.mutation({
             query: ({ id, rating }) => ({
