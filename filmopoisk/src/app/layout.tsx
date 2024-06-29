@@ -1,3 +1,4 @@
+import Link from "next/link"
 
 export default function RootLayout({
   children,
@@ -6,7 +7,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body >{children}</body>
+      <body >
+        <header>
+    <Link href={'/main'}>main</Link> <br />
+    <Link href={'/film'}>film</Link> <br />
+    <Link href={'/'}>home</Link>
+          
+        </header>
+        {children}
+      </body>
     </html>
   );
 }
