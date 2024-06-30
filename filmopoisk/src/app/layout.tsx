@@ -1,11 +1,20 @@
 import React from 'react';
-import { Providers } from './providers'; // Adjust the path as necessary
+import './globals.css'
+import { Providers } from './providers'; 
+import Header from '../components/Header/Header';
 
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" type="text/css" href="./globals.css" />
+      </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          {children}
+          
+        </Providers>
       </body>
     </html>
   );

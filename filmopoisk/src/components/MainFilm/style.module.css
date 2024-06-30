@@ -1,0 +1,45 @@
+
+.main_movie {
+    padding: 24px 24px 29px;
+    background-color: white;
+    display: flex;
+    gap: 32px;
+    margin-top: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .main_movie__title {
+    font-size: 32px;
+    line-height: 32px;
+    font-weight: 600;
+    margin-bottom: 36px;
+  }
+  
+  .main_movie__poster {
+    max-width: 400px;
+    border-radius: 8px;
+    max-height: 500px;
+  }
+
+  .main_movie_list__item {
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 16px;
+
+  }
+
+  .item__option {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .main_movie_list__item_last {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .main_movie__header {
+    display: flex;
+    justify-content: space-between;
+  }

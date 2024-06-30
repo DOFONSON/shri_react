@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,11 +6,12 @@ import { useLoginMutation } from '../../../reducers/singleMovieApi';
 import { logout } from '../../../features/auth/auth';
 import Link from 'next/link';
 import Cookies from 'universal-cookie';
-import Modal from '../Modal/Modal'; 
-import Button from '../Button/Button'; 
-import ProfileIcon from '../ProfileIcon/ProfileIcon'; 
+import Modal from '../Modal/Modal';
+import Button from '../Button/Button';
+import ProfileIcon from '../ProfileIcon/ProfileIcon';
 import styles from './style.module.css';
-import { RootState } from '../../../store/store'; 
+import { RootState } from '../../../store/store';
+
 const Header: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -84,8 +85,8 @@ const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <Link href="/">
-        <h1 className={styles.header_title}>Фильмопоиск</h1>
+      <Link href="/" className={styles.header__link}>
+          <h1 className={styles.header_title}>Фильмопоиск</h1>
       </Link>
       {token ? (
         <div className={styles.header__user}>

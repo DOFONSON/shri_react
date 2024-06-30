@@ -1,19 +1,17 @@
-import Filter from "./components/Filter/Filter"
-import Search from "./components/Search/Search"
-import Films from "./components/Films/Films"
+import Filter from '@/components/Filter/Filter'
 import styles from './style.module.css'
+import Films from '../../components/Films/Films'
+import Search from '@/components/Search/Search'
 const Main = () => {
 
     return(
-        <>
         <main>
         <Filter />
-        <div className={styles.main__main}>
-            <Search />
-            <Films />
+        <div>
+        <Search />
+        <Films  className={styles.main__main}/>
         </div>
         </main>
-        </>
         
     )
 }

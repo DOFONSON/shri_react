@@ -1,11 +1,19 @@
-import React from "react";
+"use client"
+import React, { useEffect } from "react";
 import MultiDropdown from "./components/Multidrop/Multidrop";
-import { useSearchParams } from "react-router-dom";
-import styles from './style.module.css'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import styles from './style.module.css';
+
 const Filter = () => {
-    const [genreValue, setGenreValue] = React.useState<Option | undefined>(undefined); 
-    const [yearValue, setYearValue] = React.useState<Option | undefined>(undefined); 
-    const [, setSearchParams] = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    console.log(pathname);
+    
+    const genreParam = pathname.split('/')[2] || '0';
+    const yearParam = pathname.split('/')[3] || '0';
+    const [genreValue, setGenreValue] = React.useState<Option | undefined>(undefined);
+    const [yearValue, setYearValue] = React.useState<Option | undefined>(undefined);
 
     type Option = {
         key: string;
@@ -41,22 +49,24 @@ const Filter = () => {
     let genresData = Object.entries(GENRES).map(([key, value]) => ({ key, value }));
     let yearsData = Object.entries(YEARS).map(([key, value]) => ({ key, value }));
 
-    const getGenreFunction = (value: Option | undefined): void => { 
-        setGenreValue(value);
-        setSearchParams((params) => {
-            const newParams = new URLSearchParams(params);
-            newParams.set('genre', value?.value.toLocaleLowerCase() || ''); 
-            return newParams;
-        });
+    useEffect(() => {
+        setGenreValue(genresData.find(g => g.key === genreParam));
+        setYearValue(yearsData.find(y => y.key === yearParam));
+    }, [genreParam, yearParam]);
+
+    const updatePathname = (genre: string, year: string) => {
+        let newPathname = `/1/${encodeURIComponent(genre)}/${encodeURIComponent(year)}`;
+        router.push(newPathname);
     };
 
-    const getYearFunction = (value: Option | undefined): void => { 
+    const getGenreFunction = (value: Option | undefined): void => {
+        setGenreValue(value);
+        updatePathname(value?.key.toLocaleLowerCase() || '0', yearValue?.key.toLocaleLowerCase() || '0');
+    };
+
+    const getYearFunction = (value: Option | undefined): void => {
         setYearValue(value);
-        setSearchParams((params) => {
-            const newParams = new URLSearchParams(params);
-            newParams.set('year', value?.value.toLocaleLowerCase() || ''); 
-            return newParams;
-        });
+        updatePathname(genreValue?.key.toLocaleLowerCase() || '0', value?.key.toLocaleLowerCase() || '0');
     };
 
     return (
@@ -71,25 +81,25 @@ const Filter = () => {
                         value={genreValue}
                         onChange={getGenreFunction}
                         getTitle={(value) => value ? value.value : 'Выберите жанр'}
-                        singleSelect 
+                        singleSelect
                     />
                 </label>
             </div>
             <div className={styles.filter__input}>
                 <label htmlFor="searchInput">
-                    <span className={styles.filter__label_title}>Кинотетр</span>
+                    <span className={styles.filter__label_title}>Год</span>
                     <MultiDropdown
                         className={styles.filter__drop}
                         options={yearsData}
                         value={yearValue}
                         onChange={getYearFunction}
                         getTitle={(value) => value ? value.value : 'Выберите год'}
-                        singleSelect 
+                        singleSelect
                     />
                 </label>
             </div>
         </div>
     );
-}
+};
 
 export default Filter;

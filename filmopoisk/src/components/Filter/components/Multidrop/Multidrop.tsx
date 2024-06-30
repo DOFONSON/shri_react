@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Input from '../../../../../../../components/Input/Input';
+import Input from '@/components/Input/Input';
 import cn from 'clsx';
 import styles from './style.module.css'
 import MultiIcon from './MultiIcon';
