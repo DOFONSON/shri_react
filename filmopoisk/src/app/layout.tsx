@@ -1,21 +1,14 @@
-import Link from "next/link"
+import React from 'react';
+import { Providers } from './providers'; // Adjust the path as necessary
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout = ({ children }) => {
   return (
     <html lang="en">
-      <body >
-        <header>
-    <Link href={'/main'}>main</Link> <br />
-    <Link href={'/film'}>film</Link> <br />
-    <Link href={'/'}>home</Link>
-          
-        </header>
-        {children}
+      <body>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

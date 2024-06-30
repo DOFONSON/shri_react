@@ -1,0 +1,28 @@
+.header {
+    background: #333333;
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    top: 0; 
+    align-items: center;
+    z-index: 1000; 
+}
+
+  .header__user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+.header {
+    text-decoration: none;
+  }
+  
+  .header_title {
+    color: white;
+    font-size: 32px;
+    line-height: 37.5px;
+    text-decoration: none;
+  }
+ 

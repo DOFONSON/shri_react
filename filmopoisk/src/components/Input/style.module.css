@@ -1,0 +1,22 @@
+.super_input {
+    width: 360px;
+    border: 1px solid #E1E3E6;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 10px 16px 10px 16px;
+    box-sizing: border-box;
+  }
+  
+  .super_input:focus {
+    border: 1px solid #FF5500;
+  }
+  .srchinp_input {
+    width: 400px;
+    padding: 12px 12px 12px 36px;
+  }
+
+  .input_icon {
+    position: absolute;
+    top: 118px;
+    left: 475px;
+  }
